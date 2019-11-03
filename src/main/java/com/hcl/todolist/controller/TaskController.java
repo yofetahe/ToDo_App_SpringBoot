@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,12 +32,13 @@ public class TaskController {
 	@CrossOrigin(origins = "http://localhost:3000")
 	@PostMapping("/addTask")
 	public ResponseEntity<ToDoList> addTask(@RequestBody Task task){
-		System.out.println(task.getTask_title());
-		System.out.println(task.getToDoList().getId());
+
 		boolean result = taskService.addTask(task);
 		
+		ToDoList t = toDoListService.getToDoListById(task.getToDoList().getId());
+
 		if(result)
-			return new ResponseEntity<ToDoList>(toDoListService.getToDoListById(task.getToDoList().getId()), HttpStatus.OK);
+			return new ResponseEntity<ToDoList>(t, HttpStatus.OK);
 		
 		return null;
 	}
@@ -56,7 +58,7 @@ public class TaskController {
 	@CrossOrigin(origins = "http://localhost:3000")
 	@GetMapping("/getTaskById/{id}")
 	public ResponseEntity<Task> getTaskById(@PathVariable long id){
-		
+
 		return new ResponseEntity<Task>(taskService.getTaskById(id), HttpStatus.OK);
 	}
 	
@@ -67,6 +69,17 @@ public class TaskController {
 		List<ToDoList> toDoList = toDoListService.getAllToDoList();
 		
 		return new ResponseEntity<ToDoList>(toDoList.stream().filter(i -> i.getId() == id).collect(Collectors.toList()).get(0), HttpStatus.OK);
+	}
+	
+	@CrossOrigin(origins = "http://localhost:3000")
+	@DeleteMapping("/deleteTaskById/{toDo_id}/{task_id}")
+	public ResponseEntity<ToDoList> deleteTaskById(@PathVariable long toDo_id, @PathVariable long task_id){
+
+		taskService.deleteTaskById(task_id);
+		
+		ToDoList toDo = toDoListService.getToDoListById(toDo_id);
+		
+		return new ResponseEntity<ToDoList>(toDo, HttpStatus.ACCEPTED);
 	}
 
 }

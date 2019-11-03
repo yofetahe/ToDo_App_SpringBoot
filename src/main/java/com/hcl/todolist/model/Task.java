@@ -19,6 +19,7 @@ import javax.validation.constraints.Size;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -53,6 +54,7 @@ public class Task {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "toDoList", nullable = false)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private ToDoList toDoList;
 	
 	@PrePersist

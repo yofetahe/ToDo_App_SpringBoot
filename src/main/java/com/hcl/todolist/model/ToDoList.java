@@ -18,12 +18,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import org.springframework.beans.factory.annotation.Value;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -50,9 +46,9 @@ public class ToDoList {
 	private String update_at;
 	
 	@OneToMany(mappedBy = "toDoList", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JsonIgnoreProperties("toDoList")
+	@JsonIgnoreProperties("toDoList")	
 	private List<Task> task = new ArrayList<Task>();
-	
+		
 	@PrePersist
 	void createdAt() {
 		Date date = new Date();

@@ -1,5 +1,7 @@
 package com.hcl.todolist.serviceImpl;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,9 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	public Task getTaskById(long id) {
 		
-		return taskRepo.findById(id).get();
+		Optional<Task> task = taskRepo.findById(id);
+		
+		return task.isPresent()?task.get():null;
 	}
 
 	@Override
